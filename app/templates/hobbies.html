@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <h2>Hobbies</h2>
+        <a href="{{ url_for('index') }}#hobbies">Back home</a>
+    </div>
+    <div class="card-grid three-column">
+        {% for hobby in hobbies %}
+            <article class="mini-card">
+                <img src="{{ url_for('static', filename=hobby.image) }}" alt="{{ hobby.name }}">
+                <h3>{{ hobby.name }}</h3>
+                <p>{{ hobby.description }}</p>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

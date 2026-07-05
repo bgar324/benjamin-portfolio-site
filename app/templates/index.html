@@ -1,40 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:title" content="Personal Portfolio">
-    <meta property="og:description" content="My Personal Portfolio">
-    <meta property="og:url" content="{{ url }}">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-
-    <link lang='sass' rel="stylesheet" href="./static/styles/main.css">
-    <link rel='icon' href='./static/img/favicon.ico' type='image/x-icon' />
-    <title>{{ title }}</title>
-</head>
-
-<body>
-    <header class="nav-bar">
-        <div class="nav-content">
-            <a href="/">
-                <div class="nav-logo">
-                    <img src="./static/img/logo.svg" />
-                </div>
-            </a>
-        </div>
-    </header>
-
-    <div class="profile">
-        <div id="profile-picture" class="profile-picture">
-            <img src="./static/img/logo.jpg">
-        </div>
-        <h1>{{ title }}</h1>
+{% block content %}
+<section class="section" id="about">
+    <div class="section-heading">
+        <h2>About</h2>
+        <a href="{{ url_for('static', filename=profile.resume) }}" target="_blank" rel="noopener noreferrer">Resume</a>
     </div>
-</body>
-</html>
+    {% for paragraph in about_paragraphs %}
+        <p>{{ paragraph }}</p>
+    {% endfor %}
+    <div class="social-links" aria-label="Social links">
+        {% for link in social_links %}
+            <a href="{{ link.href }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="experience">
+    <div class="section-heading">
+        <h2>Experience</h2>
+    </div>
+    <div class="timeline-list">
+        {% for item in experiences %}
+            <article class="timeline-card">
+                <a class="timeline-logo" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.company }} logo">
+                </a>
+                <div>
+                    <p class="eyebrow">{{ item.dates }}</p>
+                    <h3>{{ item.role }}</h3>
+                    <a class="subtle-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">{{ item.company }}</a>
+                    <p>{{ item.description }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="education">
+    <div class="section-heading">
+        <h2>Education</h2>
+    </div>
+    <div class="timeline-list">
+        {% for item in education %}
+            <article class="timeline-card">
+                <a class="timeline-logo" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.school }} logo">
+                </a>
+                <div>
+                    <p class="eyebrow">{{ item.dates }}</p>
+                    <h3>{{ item.degree }}</h3>
+                    <a class="subtle-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">{{ item.school }}</a>
+                    <p>{{ item.description }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="projects">
+    <div class="section-heading">
+        <h2>Selected Projects</h2>
+        <a href="{{ url_for('projects') }}">All projects</a>
+    </div>
+    <div class="card-grid two-column">
+        {% for project in projects %}
+            <article class="feature-card">
+                <img src="{{ url_for('static', filename=project.image) }}" alt="{{ project.title }} preview">
+                <div>
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.summary }}</p>
+                    <div class="tag-list">
+                        {% for tag in project.tags %}
+                            <span>{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="link-row">
+                        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">Site</a>
+                        <a href="{{ project.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="hobbies">
+    <div class="section-heading">
+        <h2>Hobbies</h2>
+        <a href="{{ url_for('hobbies') }}">Hobbies page</a>
+    </div>
+    <div class="card-grid three-column">
+        {% for hobby in hobbies %}
+            <article class="mini-card">
+                <img src="{{ url_for('static', filename=hobby.image) }}" alt="{{ hobby.name }}">
+                <h3>{{ hobby.name }}</h3>
+                <p>{{ hobby.description }}</p>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="locations">
+    <div class="section-heading">
+        <h2>Map</h2>
+        <a href="{{ profile.map_url }}" target="_blank" rel="noopener noreferrer">Open map</a>
+    </div>
+    <div class="map-layout">
+        <iframe
+            title="Map centered on Westwood, Los Angeles"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Westwood,+Los+Angeles,+CA&output=embed">
+        </iframe>
+        <div class="location-list">
+            {% for place in locations %}
+                <a href="{{ place.url }}" target="_blank" rel="noopener noreferrer">
+                    <strong>{{ place.name }}</strong>
+                    <span>{{ place.description }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

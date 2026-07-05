@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <h2>Projects</h2>
+        <a href="{{ url_for('index') }}#projects">Back home</a>
+    </div>
+    <div class="card-grid two-column">
+        {% for project in projects %}
+            <article class="feature-card">
+                <img src="{{ url_for('static', filename=project.image) }}" alt="{{ project.title }} preview">
+                <div>
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.summary }}</p>
+                    <div class="tag-list">
+                        {% for tag in project.tags %}
+                            <span>{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="link-row">
+                        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">Site</a>
+                        <a href="{{ project.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
