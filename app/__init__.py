@@ -27,8 +27,12 @@ def inject_site_data():
     }
 
 
-@app.route('/')
 @app.route('/benjamin/')
+def benjamin():
+    return index()
+
+
+@app.route('/')
 def index():
     return render_template(
         'index.html',
