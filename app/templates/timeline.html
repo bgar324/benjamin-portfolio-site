@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="community-timeline" aria-labelledby="timeline-title">
+    <header class="timeline-intro">
+        <p class="timeline-kicker">Community field notes</p>
+        <div class="timeline-title-row">
+            <h2 id="timeline-title">What are you building?</h2>
+            <span class="live-marker"><i aria-hidden="true"></i> Live timeline</span>
+        </div>
+        <p>Share a thought, a win, or something you learned. The newest dispatches appear first.</p>
+    </header>
+
+    <div class="timeline-layout">
+        <aside class="timeline-composer" aria-labelledby="composer-title">
+            <div class="composer-heading">
+                <span aria-hidden="true">✦</span>
+                <div>
+                    <p>New dispatch</p>
+                    <h3 id="composer-title">Add to the timeline</h3>
+                </div>
+            </div>
+
+            <form id="timeline-form" action="{{ url_for('post_timeline_post') }}" method="post">
+                <div class="field-group">
+                    <label for="timeline-name">Your name</label>
+                    <input id="timeline-name" name="name" type="text" autocomplete="name" maxlength="255" required>
+                </div>
+
+                <div class="field-group">
+                    <label for="timeline-email">Email</label>
+                    <input id="timeline-email" name="email" type="email" autocomplete="email" maxlength="255" required>
+                    <small>Used only to find your Gravatar.</small>
+                </div>
+
+                <div class="field-group">
+                    <div class="field-label-row">
+                        <label for="timeline-content">Your update</label>
+                        <span id="character-count">0 / 1000</span>
+                    </div>
+                    <textarea id="timeline-content" name="content" rows="6" maxlength="1000" required placeholder="Today I learned…"></textarea>
+                </div>
+
+                <button class="timeline-submit" type="submit">
+                    <span>Publish dispatch</span>
+                    <span aria-hidden="true">↗</span>
+                </button>
+                <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </form>
+        </aside>
+
+        <section class="dispatches" aria-labelledby="dispatches-title">
+            <div class="dispatches-heading">
+                <div>
+                    <p>From the community</p>
+                    <h3 id="dispatches-title">Recent dispatches</h3>
+                </div>
+                <span id="post-count" aria-live="polite"></span>
+            </div>
+
+            <div id="timeline-posts" class="dispatch-list" aria-live="polite" aria-busy="true">
+                <div class="timeline-loading" role="status">
+                    <span aria-hidden="true"></span>
+                    Gathering the latest dispatches…
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<template id="timeline-post-template">
+    <article class="dispatch-card">
+        <div class="dispatch-rail" aria-hidden="true"><span></span></div>
+        <div class="dispatch-body">
+            <header>
+                <img class="dispatch-avatar" width="48" height="48" alt="">
+                <div>
+                    <h4 class="dispatch-author"></h4>
+                    <time class="dispatch-time"></time>
+                </div>
+            </header>
+            <p class="dispatch-content"></p>
+        </div>
+    </article>
+</template>
+
+<script src="{{ url_for('static', filename='scripts/timeline.js') }}" defer></script>
+{% endblock %}

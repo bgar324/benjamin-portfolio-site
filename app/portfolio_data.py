@@ -12,6 +12,7 @@ PROFILE = {
 
 NAV_ITEMS = [
     {"label": "Home", "endpoint": "index"},
+    {"label": "Timeline", "endpoint": "timeline"},
     {"label": "Hobbies", "endpoint": "hobbies"},
     {"label": "Projects", "endpoint": "projects"},
 ]
