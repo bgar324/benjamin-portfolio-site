@@ -137,6 +137,9 @@ form.addEventListener("submit", async (event) => {
             headers: { Accept: "application/json" },
         });
 
+        if (response.status === 429) {
+            throw new Error("Rate limit reached. Please wait one minute before posting again.");
+        }
         if (!response.ok) throw new Error("Your dispatch could not be published. Please try again.");
 
         const newPost = await response.json();
