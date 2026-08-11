@@ -27,7 +27,7 @@ SOCIAL_LINKS = [
 ABOUT_PARAGRAPHS = [
     "I'm a junior studying Computer Science at UCLA. I build production interfaces, full-stack systems, and AI tools.",
     "Currently, I work at Lindy as a Software Engineer Intern building core infrastructure and services for email and meeting agents. I also conduct research in UCLA's HCI Research Lab on multi-agent systems for scientific hypothesis generation.",
-    "I care deeply about responsive, accessible interfaces that make complex systems feel clear, useful, and intuitive.",
+    "I care deeply about responsive, accessible interfaces and reliable delivery through automated testing and deployment.",
 ]
 
 EXPERIENCES = [
