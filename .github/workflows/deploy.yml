@@ -34,4 +34,4 @@ jobs:
           chmod 600 ~/.ssh/config
 
       - name: Print project root directory
-        run: ssh my-vps 'cd "${{ secrets.PROJECT_ROOT }}" && pwd'
+        run: ssh my-vps 'cd ${{ secrets.PROJECT_ROOT }} && pwd'
