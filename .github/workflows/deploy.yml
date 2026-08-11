@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure SSH
+        env:
+          SSH_IP: ${{ secrets.SSH_IP }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy-key
+          chmod 600 ~/.ssh/deploy-key
+          ssh-keyscan -H "$SSH_IP" 2>/dev/null >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          printf '%s\n' \
+            'Host my-vps' \
+            "  HostName $SSH_IP" \
+            "  User $SSH_USER" \
+            '  IdentityFile ~/.ssh/deploy-key' \
+            '  IdentitiesOnly yes' \
+            '  StrictHostKeyChecking yes' \
+            > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+      - name: Print project root directory
+        run: ssh my-vps 'cd "${{ secrets.PROJECT_ROOT }}" && pwd'
