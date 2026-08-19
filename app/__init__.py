@@ -144,5 +144,22 @@ def get_timeline_posts():
     }
 
 
+@app.route("/health")
+def health():
+    """Verify that the web application can reach its database."""
+    try:
+        mydb.connect(reuse_if_open=True)
+        mydb.execute_sql("SELECT 1")
+    except Exception:
+        app.logger.exception("Database health check failed")
+        return {
+            "application": "ok",
+            "database": "unavailable",
+            "status": "unhealthy",
+        }, 503
+
+    return {"application": "ok", "database": "ok", "status": "healthy"}
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,9 +1,10 @@
 import os
 import unittest
+from unittest.mock import patch
 
 os.environ["TESTING"] = "true"
 
-from app import TimelinePost, app
+from app import TimelinePost, app, mydb
 
 
 class AppTestCase(unittest.TestCase):
@@ -75,3 +76,24 @@ class AppTestCase(unittest.TestCase):
                 self.assertEqual(response.status_code, 400)
                 self.assertIn(error_message, response.data)
                 self.assertEqual(TimelinePost.select().count(), 0)
+
+    def test_health_check_reaches_database(self):
+        response = self.client.get("/health")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.get_json(),
+            {"application": "ok", "database": "ok", "status": "healthy"},
+        )
+
+    def test_health_check_reports_database_failure(self):
+        with patch.object(
+            mydb,
+            "execute_sql",
+            side_effect=RuntimeError("database unavailable"),
+        ):
+            response = self.client.get("/health")
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.get_json()["status"], "unhealthy")
+        self.assertEqual(response.get_json()["database"], "unavailable")
